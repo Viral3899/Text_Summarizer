@@ -3,9 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+artifacts/*
+
+
 # C extensions
 *.so
-
+*/path_to_nltk_data/*
 # Distribution / packaging
 .Python
 build/
