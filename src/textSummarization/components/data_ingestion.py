@@ -1,12 +1,14 @@
 import requests
-import os
-import urllib.request as request
-import zipfile
-from textSummarization import logger,CustomException
-from textSummarization.utils.common import get_size 
-from textSummarization.entity import (DataIngestionConfig)
-from pathlib import Path
 import sys
+import os
+import zipfile
+from textSummarization import logger, CustomException
+from textSummarization.utils.common import get_size
+from textSummarization.entity import DataIngestionConfig
+from pathlib import Path
+
+from textSummarization.utils.common import * 
+
 
 
 class DataIngestion:
@@ -20,11 +22,14 @@ class DataIngestion:
                 if response.status_code == 200:
                     with open(self.config.local_data_file, 'wb') as file:
                         file.write(response.content)
-                    logger.info(f"Downloaded data to {self.config.local_data_file} with size of {get_size(Path(self.config.local_data_file))}")
+                    logger.info(
+                        f"Downloaded data to {self.config.local_data_file} with size of {get_size(Path(self.config.local_data_file))}")
                 else:
-                    logger.error(f"Failed to download data. HTTP status code: {response.status_code}")
+                    logger.error(
+                        f"Failed to download data. HTTP status code: {response.status_code}")
             else:
-                logger.info(f"Data file already exists at {self.config.local_data_file} with size of {get_size(Path(self.config.local_data_file))}")
+                logger.info(
+                    f"Data file already exists at {self.config.local_data_file} with size of {get_size(Path(self.config.local_data_file))}")
         except Exception as e:
             logger.info(f"Error Occurred at {CustomException(e,sys)}")
             raise CustomException(e, sys)

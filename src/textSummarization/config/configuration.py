@@ -1,7 +1,9 @@
 from textSummarization.constants import *
 from textSummarization.utils.common import read_yaml, create_directories
-from textSummarization.entity import (DataIngestionConfig)
-from textSummarization import logger,CustomException
+from textSummarization.entity import (
+    DataIngestionConfig, DataValidationConfig)
+from textSummarization import logger, CustomException
+import sys
 
 
 class ConfigurationManager:
@@ -27,8 +29,22 @@ class ConfigurationManager:
                 local_data_file=config.local_data_file,
                 unzip_dir=config.unzip_dir
             )
+
+            return data_ingestion_config
+
         except Exception as e:
             logger.info(f"Error Occurred at {CustomException(e,sys)}")
             raise CustomException(e, sys)
-        
-        return data_ingestion_config
+
+    def get_data_validation_config(self) -> DataValidationConfig:
+        config = self.config.data_validation
+        print(config)
+        create_directories([config.root_dir])
+
+        data_validation_config = DataValidationConfig(
+            root_dir=config.root_dir,
+            STATUS_FILE=config.STATUS_FILE,
+            ALL_REQUIRED_FILES=config.ALL_REQUIRED_FILES
+        )
+
+        return data_validation_config

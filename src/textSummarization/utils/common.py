@@ -12,8 +12,11 @@ from pathlib import Path
 from ensure import ensure_annotations
 from textSummarization import logger ,CustomException
 import sys
+from datetime import datetime
 
 
+def get_current_time_stamp():
+    return f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
 
 
 @ensure_annotations
