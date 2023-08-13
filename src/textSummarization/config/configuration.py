@@ -1,7 +1,7 @@
 from textSummarization.constants import *
 from textSummarization.utils.common import read_yaml, create_directories
 from textSummarization.entity import (
-    DataIngestionConfig, DataValidationConfig, DataTransformationConfig,ModelTrainerConfig)
+    DataIngestionConfig, DataValidationConfig, DataTransformationConfig, ModelTrainerConfig, ModelEvaluationConfig)
 from textSummarization import logger, CustomException
 import sys
 
@@ -76,7 +76,7 @@ class ConfigurationManager:
             create_directories([config.root_dir])
 
             model_trainer_config = ModelTrainerConfig(
-                root_dir= config.root_dir,
+                root_dir=config.root_dir,
                 data_path=config.data_path,
                 model_ckpt=config.model_ckpt,
                 num_train_epochs=params.num_train_epochs,
@@ -91,6 +91,24 @@ class ConfigurationManager:
             )
 
             return model_trainer_config
+        except Exception as e:
+            logger.info(f"Error Occurred at {CustomException(e,sys)}")
+            raise CustomException(e, sys)
+
+    def get_model_evaluation_config(self) -> ModelEvaluationConfig:
+        try:
+            config = self.config.model_trainer
+            create_directories([config.root_dir])
+
+            model_evaluation_config = ModelEvaluationConfig(
+                root_dir=config.root_dir,
+                data_path=config.data_path,
+                model_path=config.model_path,
+                metric_file_name=config.metric_file_name,
+                tokenizer_path=config.tokenizer_path
+            )
+
+            return model_evaluation_config
         except Exception as e:
             logger.info(f"Error Occurred at {CustomException(e,sys)}")
             raise CustomException(e, sys)

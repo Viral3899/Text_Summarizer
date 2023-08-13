@@ -35,7 +35,7 @@ class DataTransformation:
         try:
             dataset_samsum = load_from_disk(self.config.data_path)
             dataset_samsum_pt= dataset_samsum.map(self.convert_examples_to_features,batched=True)
-            dataset_samsum_pt.save_to_disk(os.path.join(self.config.root_dir, "dataset_samsum"))
+            dataset_samsum_pt.save_to_disk(os.path.join(self.config.root_dir, "samsum_dataset"))
         except Exception as e:
                     logger.info(f"Error Occurred at {CustomException(e,sys)}")
                     raise CustomException(e, sys)
