@@ -1,7 +1,7 @@
 from textSummarization.constants import *
 from textSummarization.utils.common import read_yaml, create_directories
 from textSummarization.entity import (
-    DataIngestionConfig, DataValidationConfig, DataTransformationConfig)
+    DataIngestionConfig, DataValidationConfig, DataTransformationConfig,ModelTrainerConfig)
 from textSummarization import logger, CustomException
 import sys
 
@@ -65,6 +65,32 @@ class ConfigurationManager:
             )
 
             return data_transformation_config
+        except Exception as e:
+            logger.info(f"Error Occurred at {CustomException(e,sys)}")
+            raise CustomException(e, sys)
+
+    def get_model_trainer_config(self) -> ModelTrainerConfig:
+        try:
+            config = self.config.model_trainer
+            params = self.params.TrainingArguments
+            create_directories([config.root_dir])
+
+            model_trainer_config = ModelTrainerConfig(
+                root_dir= config.root_dir,
+                data_path=config.data_path,
+                model_ckpt=config.model_ckpt,
+                num_train_epochs=params.num_train_epochs,
+                per_device_train_batch_size=params.per_device_train_batch_size,
+                gradient_accumulation_steps=params.gradient_accumulation_steps,
+                warmup_steps=params.warmup_steps,
+                logging_steps=params.logging_steps,
+                eval_steps=params.eval_steps,
+                evaluation_strategy=params.evaluation_strategy,
+                save_steps=params.save_steps,
+                weight_decay=params.weight_decay
+            )
+
+            return model_trainer_config
         except Exception as e:
             logger.info(f"Error Occurred at {CustomException(e,sys)}")
             raise CustomException(e, sys)
