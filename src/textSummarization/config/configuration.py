@@ -1,7 +1,7 @@
 from textSummarization.constants import *
 from textSummarization.utils.common import read_yaml, create_directories
 from textSummarization.entity import (
-    DataIngestionConfig, DataValidationConfig)
+    DataIngestionConfig, DataValidationConfig, DataTransformationConfig)
 from textSummarization import logger, CustomException
 import sys
 
@@ -31,20 +31,40 @@ class ConfigurationManager:
             )
 
             return data_ingestion_config
-
         except Exception as e:
             logger.info(f"Error Occurred at {CustomException(e,sys)}")
             raise CustomException(e, sys)
 
     def get_data_validation_config(self) -> DataValidationConfig:
-        config = self.config.data_validation
-        print(config)
-        create_directories([config.root_dir])
+        try:
+            config = self.config.data_validation
+            print(config)
+            create_directories([config.root_dir])
 
-        data_validation_config = DataValidationConfig(
-            root_dir=config.root_dir,
-            STATUS_FILE=config.STATUS_FILE,
-            ALL_REQUIRED_FILES=config.ALL_REQUIRED_FILES
-        )
+            data_validation_config = DataValidationConfig(
+                root_dir=config.root_dir,
+                STATUS_FILE=config.STATUS_FILE,
+                ALL_REQUIRED_FILES=config.ALL_REQUIRED_FILES
+            )
 
-        return data_validation_config
+            return data_validation_config
+        except Exception as e:
+            logger.info(f"Error Occurred at {CustomException(e,sys)}")
+            raise CustomException(e, sys)
+
+    def get_data_transformation_config(self) -> DataTransformationConfig:
+        try:
+            config = self.config.data_transformation
+            print(config)
+            create_directories([config.root_dir])
+
+            data_transformation_config = DataTransformationConfig(
+                root_dir=config.root_dir,
+                data_path=config.data_path,
+                tokenizer_name=config.tokenizer_name,
+            )
+
+            return data_transformation_config
+        except Exception as e:
+            logger.info(f"Error Occurred at {CustomException(e,sys)}")
+            raise CustomException(e, sys)
