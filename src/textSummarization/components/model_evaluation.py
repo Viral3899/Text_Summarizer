@@ -83,8 +83,9 @@ class ModelEvaluation:
                 )
 
             rouge_dict = dict((rn, score[rn].mid.fmeasure ) for rn in rouge_names )
+            rouge_dict.update({'time':get_current_time_stamp()})
 
-            df = pd.DataFrame(get_current_time_stamp(),rouge_dict, index = ['time','pegasus'] )
+            df = pd.DataFrame(rouge_dict, index = ['pegasus'] )
             df.to_csv(self.config.metric_file_name, mode='w+',index=False)
             
             

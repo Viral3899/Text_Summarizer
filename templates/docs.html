@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Summarization</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        function clearTextArea() {
+            document.getElementById('inputText').value = '';
+            document.getElementById('outputText').value = '';
+        }
+    </script>
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4" style="color: #007BFF;">Text Summarizer</h1>
+        <div class="card">
+            <div class="card-body">
+                <form action="/docs" method="post">
+                    <div class="form-group">
+                        <label for="inputText">Enter Text:</label>
+                        <textarea id="inputText" name="text" class="form-control" placeholder="Enter text here..." rows="6">{{ original_text }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="outputText">Summary:</label>
+                        <textarea id="outputText" name="summary" class="form-control" placeholder="Summary will appear here..." rows="6" readonly>{{ summary }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Predict</button>
+                    <button type="button" class="btn btn-secondary" onclick="clearTextArea()">Clear</button>
+                    <a href="/train" class="btn btn-warning">Train Model</a>
+                </form>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        <ul class="mt-3">
+                        {% for message in messages %}
+                            <li class="alert alert-warning">{{ message }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

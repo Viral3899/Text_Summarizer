@@ -97,7 +97,7 @@ class ConfigurationManager:
 
     def get_model_evaluation_config(self) -> ModelEvaluationConfig:
         try:
-            config = self.config.model_trainer
+            config = self.config.model_evaluation
             create_directories([config.root_dir])
 
             model_evaluation_config = ModelEvaluationConfig(
